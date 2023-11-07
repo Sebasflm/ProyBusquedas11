@@ -51,4 +51,29 @@ public class Lista {
         return resultado;
 
     }
+    public boolean comprobarUnicidad(int codigo) throws Exception{
+        for(Paquete p: listado){
+            if (codigo==p.getCodigo()){
+                throw new Exception("El paquete ya existe");
+            }
+        }
+        return true;
+    }
+    public void ordenarPaquetesPorCodigo() {
+        int n = listado.size();
+        do {
+            for (int i = 1; i < n; i++) {
+                Paquete paqueteActual = listado.get(i);
+                Paquete paqueteAnterior = listado.get(i - 1);
+
+                if (paqueteActual.getCodigo() < paqueteAnterior.getCodigo()) {
+                    listado.set(i, paqueteAnterior);
+                    listado.set(i - 1, paqueteActual);
+
+                }
+            }
+            n--;
+        } while (n>0);
+    }
+
 }

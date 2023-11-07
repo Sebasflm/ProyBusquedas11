@@ -11,11 +11,22 @@ public class Ventana {
     private JComboBox cboDestino;
     private JButton btnDestino;
     private JSpinner spCodigo;
+    private JPanel Buscar;
+    private JPanel Listar;
+    private JPanel Ingreso;
+    private JTextField origenField;
+    private JTextField pesoField;
+    private JTextField remitenteField;
+    private JTextField destinoField;
+    private JLabel titulo;
+    private JTextField codigoField;
+    private JButton btnAgregarPaquete;
     private Lista paquetes= new Lista();
     public Ventana() {
         btnListar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                paquetes.ordenarPaquetesPorCodigo();
                 for (Paquete p: paquetes.getListado()){
                     txtListar.append(p.toString());
                 }
@@ -40,6 +51,29 @@ public class Ventana {
                 String destino= cboDestino.getSelectedItem().toString();
                 for(Paquete p: paquetes.paqueteConDestino(destino)){
                     txtResultado.append(p.toString());
+                }
+            }
+        });
+        btnAgregarPaquete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               int codigo1= Integer.parseInt(codigoField.getText());
+                if (codigoField.getText().isEmpty() || origenField.getText().isEmpty() ||
+                        destinoField.getText().isEmpty() || remitenteField.getText().isEmpty() || pesoField.getText().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Ingrese informacion en todos los campos para ingresar un nuevo paquete");
+                }
+                try {
+                    if (paquetes.comprobarUnicidad(codigo1)){
+
+                        paquetes.getListado().add(new Paquete(Integer.parseInt(codigoField.getText()), origenField.getText(),
+                                destinoField.getText(), remitenteField.getText(), Float.parseFloat(pesoField.getText()) ));
+                        paquetes.ordenarPaquetesPorCodigo();
+                        JOptionPane.showMessageDialog(null, "El paquete ha sido agregado con exito");
+
+
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
         });
