@@ -26,6 +26,7 @@ public class Ventana {
         btnListar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                txtListar.setText("");
                 paquetes.ordenarPaquetesPorCodigo();
                 for (Paquete p: paquetes.getListado()){
                     txtListar.append(p.toString());
@@ -61,16 +62,19 @@ public class Ventana {
                 if (codigoField.getText().isEmpty() || origenField.getText().isEmpty() ||
                         destinoField.getText().isEmpty() || remitenteField.getText().isEmpty() || pesoField.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Ingrese informacion en todos los campos para ingresar un nuevo paquete");
+                    return;
                 }
                 try {
                     if (paquetes.comprobarUnicidad(codigo1)){
+                    try {
+    paquetes.getListado().add(new Paquete(Integer.parseInt(codigoField.getText()), origenField.getText(),
+            destinoField.getText(), remitenteField.getText(), Float.parseFloat(pesoField.getText())));
+    paquetes.ordenarPaquetesPorCodigo();
+    JOptionPane.showMessageDialog(null, "El paquete ha sido agregado con exito");
 
-                        paquetes.getListado().add(new Paquete(Integer.parseInt(codigoField.getText()), origenField.getText(),
-                                destinoField.getText(), remitenteField.getText(), Float.parseFloat(pesoField.getText()) ));
-                        paquetes.ordenarPaquetesPorCodigo();
-                        JOptionPane.showMessageDialog(null, "El paquete ha sido agregado con exito");
-
-
+                    }catch (Exception a){
+    JOptionPane.showMessageDialog(null, "Ingrese un numero con el .");
+                    }
                     }
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage());
